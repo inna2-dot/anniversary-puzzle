@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>❤️ Happy 2 Years ❤️</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Press Start 2P', monospace;
+      background: #0f0f23;
+      background-image: 
+        radial-gradient(circle at 25% 25%, #1a1a3a 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, #2d1b69 0%, transparent 50%);
+      min-height: 100vh;
+      color: #00ff41;
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+    }
+
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(transparent 50%, rgba(0, 255, 65, 0.03) 50%);
+      background-size: 100% 4px;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .start-screen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+      position: relative;
+      background-image: url('background.png');
+      background-size: cover;
+      background-position: center;
+      background-blend-mode: multiply;
+    }
+
+    .title {
+      font-size: 4rem;
+      color: #00ff41;
+      text-shadow: 
+        0 0 5px #00ff41,
+        0 0 10px #00ff41,
+        0 0 15px #00ff41,
+        4px 4px 0px #ff0080;
+      margin-bottom: 30px;
+      animation: glowPulse 2s ease-in-out infinite alternate;
+      z-index: 10;
+    }
+
+    @keyframes glowPulse {
+      0% { text-shadow: 0 0 5px #00ff41, 0 0 10px #00ff41, 0 0 15px #00ff41, 4px 4px 0px #ff0080; }
+      100% { text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41, 0 0 30px #00ff41, 4px 4px 0px #ff0080; }
+    }
+
+    .start-gif {
+      width: 200px;
+      height: 150px;
+      margin: 20px 0;
+      border: 3px solid #00ff41;
+      border-radius: 5px;
+      box-shadow: 0 0 10px #00ff41, inset 0 0 10px rgba(0, 255, 65, 0.2);
+      z-index: 10;
+    }
+
+    .play-button {
+      background: linear-gradient(45deg, #1a1a3a, #2d1b69);
+      color: #00ff41;
+      border: 3px solid #00ff41;
+      padding: 20px 40px;
+      font-size: 1.2rem;
+      font-family: 'Press Start 2P', monospace;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      box-shadow: 0 0 10px #00ff41, inset 0 0 10px rgba(0, 255, 65, 0.1);
+      z-index: 10;
+    }
+    .play-button:hover {
+      background: #00ff41;
+      color: #0f0f23;
+      box-shadow: 0 0 20px #00ff41, 0 0 30px #00ff41;
+      transform: translateY(-2px);
+    }
+
+    .retro-hearts {
+      position: absolute;
+      font-size: 1.5rem;
+      color: #ff0080;
+      animation: retroFloat 4s ease-in-out infinite;
+      text-shadow: 0 0 5px #ff0080;
+      z-index: 5;
+    }
+    .retro-hearts:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+    .retro-hearts:nth-child(2) { top: 20%; right: 15%; animation-delay: 1s; }
+    .retro-hearts:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 2s; }
+    .retro-hearts:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 3s; }
+
+    @keyframes retroFloat {
+      0%, 100% { transform: translateY(0px); opacity: 0.7; }
+      50% { transform: translateY(-15px); opacity: 1; }
+    }
+
+    .game-area {
+      display: none;
+      min-height: 100vh;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      background-image: url('background.png');
+      background-size: cover;
+      background-position: center;
+      background-blend-mode: multiply;
+    }
+
+    .game-title {
+      color: #00ff41;
+      font-size: 1.8rem;
+      text-shadow: 0 0 10px #00ff41;
+      margin-bottom: 20px;
+      z-index: 10;
+      position: relative;
+    }
+
+    .puzzle-container {
+      max-width: 650px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+    }
+
+    .grid-labels {
+      display: grid;
+      grid-template-columns: repeat(4, 150px);
+      gap: 2px;
+      width: 606px;
+      margin: 0 auto 10px auto;
+      font-size: 0.8rem;
+      color: #ff0080;
+    }
+
+    .grid-label { text-align: center; text-shadow: 0 0 5px #ff0080; }
+
+    /* ✅ Puzzle board with neon grid */
+    #puzzle {
+      display: grid;
+      grid-template-columns: repeat(4, 150px);
+      grid-template-rows: repeat(4, 150px);
+      gap: 2px;
+      width: 606px;
+      height: 606px;
+      margin: 0 auto 20px auto;
+      background: repeating-linear-gradient(
+          to right, rgba(0, 255, 65, 0.3) 0, rgba(0, 255, 65, 0.3) 2px, transparent 2px, transparent 150px
+        ),
+        repeating-linear-gradient(
+          to bottom, rgba(0, 255, 65, 0.3) 0, rgba(0, 255, 65, 0.3) 2px, transparent 2px, transparent 150px
+        ),
+        #1a1a3a;
+      border: 4px solid #00ff41;
+      border-radius: 5px;
+      box-shadow: 0 0 20px #00ff41, inset 0 0 20px rgba(0, 255, 65, 0.1);
+    }
+
+    .puzzle-piece {
+      width: 150px;
+      height: 150px;
+      background-size: cover;
+      background-position: center;
+      border: 2px solid #666;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ✅ Correct pieces glow green */
+    .puzzle-piece.correct {
+      border: 2px solid #00ff41 !important;
+      box-shadow: 0 0 10px #00ff41, inset 0 0 5px rgba(0, 255, 65, 0.5);
+      z-index: 2;
+    }
+
+    #completedImage {
+      display: none;
+      width: 606px;
+      height: 606px;
+      margin: 0 auto 20px auto;
+      background-image: url('complete-image.png');
+      background-size: cover;
+      border: 4px solid #00ff41;
+      border-radius: 5px;
+      box-shadow: 0 0 20px #00ff41;
+    }
+
+    @keyframes fadeOut { from {opacity:1;} to {opacity:0;transform:scale(0.95);} }
+    @keyframes slideUp { from {opacity:0;transform:translateY(50px);} to {opacity:1;transform:translateY(0);} }
+
+    .completion-message {
+      display: none;
+      margin-top: 30px;
+      text-align: center;
+      padding: 30px;
+      background: rgba(15, 15, 35, 0.95);
+      border: 4px solid #00ff41;
+      border-radius: 10px;
+      box-shadow: 0 0 30px #00ff41, inset 0 0 30px rgba(0, 255, 65, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="scanlines"></div>
+
+  <audio id="music" loop>
+    <source src="background-music.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="start-screen" id="startScreen">
+    <div class="retro-hearts">♥</div>
+    <div class="retro-hearts">♥</div>
+    <div class="retro-hearts">♥</div>
+    <div class="retro-hearts">♥</div>
+    <h1 class="title">PLAY</h1>
+    <img class="start-gif" src="gif1.gif" alt="Start Animation">
+    <button class="play-button" onclick="startGame()">Start Puzzle</button>
+  </div>
+
+  <div class="game-area" id="gameArea">
+    <div class="puzzle-container">
+      <h2 class="game-title">🧩 SOLVE THE PUZZLE! 🧩</h2>
+      <div class="instruction">Click pieces to swap them. Green = correct position!</div>
+      <div class="grid-labels">
+        <div class="grid-label">POS 0</div><div class="grid-label">POS 1</div><div class="grid-label">POS 2</div><div class="grid-label">POS 3</div>
+        <div class="grid-label">POS 4</div><div class="grid-label">POS 5</div><div class="grid-label">POS 6</div><div class="grid-label">POS 7</div>
+        <div class="grid-label">POS 8</div><div class="grid-label">POS 9</div><div class="grid-label">POS 10</div><div class="grid-label">POS 11</div>
+        <div class="grid-label">POS 12</div><div class="grid-label">POS 13</div><div class="grid-label">POS 14</div><div class="grid-label">POS 15</div>
+      </div>
+      <div id="puzzle"></div>
+      <div id="completedImage"></div>
+      <div class="completion-message" id="completionMessage">
+        <h1 class="completion-title">WELL DONE!</h1>
+        <img class="celebration-gif" src="gif2.gif" alt="Celebration">
+        <div class="love-message">✨ Happy 2 Years, my love! ✨</div>
+        <button class="reset-button" onclick="resetGame()">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const rows=4,cols=4,totalPieces=rows*cols;
+    let selectedPiece=null,correctCount=0,pieces=[];
+
+    function startGame(){
+      document.getElementById('startScreen').style.display='none';
+      document.getElementById('gameArea').style.display='block';
+      const music=document.getElementById('music');
+      music.play().catch(()=>{});
+      document.addEventListener('click',()=>music.play().catch(()=>{}),{once:true});
+      initializePuzzle();
+    }
+
+    function initializePuzzle(){
+      const puzzle=document.getElementById("puzzle");
+      puzzle.innerHTML='';correctCount=0;selectedPiece=null;pieces=[];
+      for(let i=0;i<totalPieces;i++)pieces.push(i);
+      shuffleArray(pieces);
+      for(let i=0;i<totalPieces;i++){
+        const piece=document.createElement("div");
+        piece.classList.add("puzzle-piece");
+        piece.dataset.correctPosition=pieces[i];
+        piece.dataset.currentPosition=i;
+        piece.dataset.pieceNumber=pieces[i];
+        piece.dataset.targetPosition=pieces[i];
+        piece.style.backgroundImage=`url('piece-${pieces[i]}.png')`;
+        piece.addEventListener("click",()=>handlePieceClick(i));
+        puzzle.appendChild(piece);
+      }
+      checkForCorrectPieces();
+    }
+
+    function shuffleArray(array){
+      do{
+        for(let i=array.length-1;i>0;i--){
+          const j=Math.floor(Math.random()*(i+1));
+          [array[i],array[j]]=[array[j],array[i]];
+        }
+      }while(isSolved(array));
+    }
+
+    function isSolved(array){return array.every((val,idx)=>val===idx);}
+
+    function handlePieceClick(position){
+      const clickedPiece=document.querySelector(`[data-current-position="${position}"]`);
+      if(selectedPiece===null){
+        selectedPiece=position;clickedPiece.classList.add('selected');
+      }else if(selectedPiece===position){
+        clickedPiece.classList.remove('selected');selectedPiece=null;
+      }else{
+        swapPieces(selectedPiece,position);
+        document.querySelectorAll('.puzzle-piece').forEach(p=>p.classList.remove('selected'));
+        selectedPiece=null;
+      }
+    }
+
+    function swapPieces(pos1,pos2){
+      const piece1=document.querySelector(`[data-current-position="${pos1}"]`);
+      const piece2=document.querySelector(`[data-current-position="${pos2}"]`);
+      const correctPos1=piece1.dataset.correctPosition;
+      const correctPos2=piece2.dataset.correctPosition;
+      piece1.dataset.correctPosition=correctPos2;
+      piece1.style.backgroundImage=`url('piece-${correctPos2}.png')`;
+      piece2.dataset.correctPosition=correctPos1;
+      piece2.style.backgroundImage=`url('piece-${correctPos1}.png')`;
+      pieces[pos1]=parseInt(correctPos2);
+      pieces[pos2]=parseInt(correctPos1);
+      checkForCorrectPieces();
+    }
+
+    function checkForCorrectPieces(){
+      correctCount=0;
+      for(let i=0;i<totalPieces;i++){
+        const piece=document.querySelector(`[data-current-position="${i}"]`);
+        if(parseInt(piece.dataset.correctPosition)===i){
+          piece.classList.add('correct');correctCount++;
+        }else{piece.classList.remove('correct');}
+      }
+      if(correctCount===totalPieces)setTimeout(showCompletion,800);
+    }
+
+    function showCompletion(){
+      setTimeout(()=>{
+        document.getElementById('puzzle').style.display='none';
+        document.querySelector('.grid-labels').style.display='none';
+        document.getElementById('completedImage').style.display='block';
+      },2000);
+      setTimeout(()=>{
+        const completedImage=document.getElementById('completedImage');
+        completedImage.style.animation="fadeOut 1s forwards";
+        setTimeout(()=>{
+          completedImage.style.display='none';
+          const message=document.getElementById('completionMessage');
+          message.style.display='block';
+          message.style.animation="slideUp 1s ease forwards";
+          createConfetti();
+        },1000);
+      },9000);
+    }
+
+    function createConfetti(){
+      const symbols=['♥','★','♦','♠','●','◆','▲','♪'];
+      const colors=['#00ff41','#ff0080','#00ffff','#ffff00'];
+      for(let i=0;i<80;i++){
+        setTimeout(()=>{
+          const confetti=document.createElement('div');
+          confetti.innerHTML=symbols[Math.floor(Math.random()*symbols.length)];
+          confetti.style.position='fixed';
+          confetti.style.left=Math.random()*100+'vw';
+          confetti.style.top='-10px';
+          confetti.style.fontSize=Math.random()*1.5+1+'rem';
+          confetti.style.color=colors[Math.floor(Math.random()*colors.length)];
+          confetti.style.zIndex='2000';
+          confetti.style.pointerEvents='none';
+          confetti.style.textShadow=`0 0 10px ${confetti.style.color}`;
+          confetti.style.animation='fall 4s linear forwards';
+          document.body.appendChild(confetti);
+          setTimeout(()=>confetti.remove(),4000);
+        },i*60);
+      }
+    }
+
+    const style=document.createElement('style');
+    style.innerHTML=`@keyframes fall{to{transform:translateY(100vh) rotate(720deg);opacity:0;}}`;
+    document.head.appendChild(style);
+
+    function resetGame(){
+      document.getElementById('completionMessage').style.display='none';
+      document.getElementById('puzzle').style.display='grid';
+      document.querySelector('.grid-labels').style.display='grid';
+      document.getElementById('completedImage').style.display='none';
+      initializePuzzle();
+    }
+  </script>
+</body>
+</html>
